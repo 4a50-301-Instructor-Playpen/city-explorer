@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Axios from 'axios'
+import Image from 'react-bootstrap/Image';
 
 
 class Main extends React.Component {
@@ -10,19 +11,31 @@ class Main extends React.Component {
     super(props);
     this.state = {
       cityInput: "",
-      locationData: { lat: "0", lon: "0", display_name: "Unk City" }
+      lat: "0.750",
+      lon: "0.756",
+      display_name: "Corneria, Lylat System",
+      staticImage: "https://via.placeholder.com/400x400"
     }
   }
-  getLocationData = async () => {
-    let URL = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_KEY}&q=${this.state.cityInput}&format=json`;
 
+  getLocationData = async () => {
+    let loqKey = process.env.REACT_APP_CITY_KEY;
+    let URL = `https://us1.locationiq.com/v1/search.php?key=${loqKey}&q=${this.state.cityInput}&format=json`;
     const res = await Axios.get(URL);
-    this.setState({ locationData: res.data[0] });
+    this.setState({
+      lat: res.data[0].lat,
+      lon: res.data[0].lon,
+      display_name: res.data[0].display_name
+    });
+    let imageURL = `https://maps.locationiq.com/v3/staticmap?key=${loqKey}&center=${this.state.lat},${this.state.lon}&zoom=15`
+    this.setState({ staticImage: imageURL });
   }
   cityFormChange = (e) => {
+    e.preventDefault();
     this.setState({ cityInput: e.target.value });
   }
   handleSubmit = (e) => {
+    e.preventDefault();
     console.log(`Clicked: ${this.state.cityInput}`);
     this.getLocationData();
 
@@ -40,17 +53,16 @@ class Main extends React.Component {
           </Form.Group>
         </Form>
         <br />
-        <Card style={{ width: '18rem' }} className="text-center">
-          <Card.Title>{this.state.locationData.display_name}</Card.Title>
+        <Card style={{ width: '50rem' }} className="text-center">
+          <Card.Title>{this.state.display_name}</Card.Title>
           <Card.Subtitle>
-            Latitiude: {this.state.locationData.lat}  Longitude: {this.state.locationData.lon}
+            Latitiude: {this.state.lat}  Longitude: {this.state.lon}
           </Card.Subtitle>
-
+          <Image src={this.state.staticImage} alt="image"></Image>
         </Card>
-        <h2>cityInput: {this.state.cityInput}</h2>
-        <p>Lat: {this.state.locationData.lat} Lon: {this.state.locationData.lon}</p>
       </>
     )
   }
 }
+
 export default Main;
