@@ -1,6 +1,6 @@
-import './App.css';
+import './css/App.css';
 import React from 'react';
-import Main from './Main.js'
+import Main from './Main'
 
 class App extends React.Component {
 
