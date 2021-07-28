@@ -27,6 +27,9 @@ class Main extends React.Component {
 
     console.log("Close the modal.  Modal State: " + this.state.modalVis);
   }
+  handleError = (error) => {
+    this.setState({ errStatus: error.response.status, errMessage: error.response.data.error, modalVis: true });
+  }
 
   getLocationData = async () => {
     let loqKey = process.env.REACT_APP_CITY_KEY;
@@ -44,9 +47,7 @@ class Main extends React.Component {
     }
     catch (e) {
       console.log('error!', e.response.status, e.response.data.error);
-      this.setState({ errStatus: e.response.status, errMessage: e.response.data.error, modalVis: true })
-
-
+      this.handleError(e);
     }
   }
   cityFormChange = (e) => {
