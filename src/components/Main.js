@@ -1,9 +1,7 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import Card from 'react-bootstrap/Card'
+import { Button, Card, Image, Container } from 'react-bootstrap'
 import Axios from 'axios'
-import Image from 'react-bootstrap/Image';
 
 
 class Main extends React.Component {
@@ -43,7 +41,7 @@ class Main extends React.Component {
   render() {
     return (
       <>
-        <h1>Main</h1>
+        <h1>City Explorer!</h1>
         <Form className="m4">
           <Form.Group>
             <Form.Control onChange={this.cityFormChange} type="text" custom>
@@ -52,14 +50,17 @@ class Main extends React.Component {
             <Button onClick={this.handleSubmit}>Explore!</Button>
           </Form.Group>
         </Form>
-        <br />
-        <Card style={{ width: '50rem' }} className="text-center">
-          <Card.Title>{this.state.display_name}</Card.Title>
-          <Card.Subtitle>
-            Latitiude: {this.state.lat}  Longitude: {this.state.lon}
-          </Card.Subtitle>
-          <Image src={this.state.staticImage} alt="image"></Image>
-        </Card>
+
+        <Container>
+          <Card style={{ width: '30rem' }} className="text-center mb-3 bg-primary">
+            <Card.Title className="p-3 text-white">{this.state.display_name}</Card.Title>
+            <Card.Subtitle className="text-white bg-secondary">
+              Latitiude: {this.state.lat}  Longitude: {this.state.lon}
+            </Card.Subtitle>
+            <Image src={this.state.staticImage} alt="image"></Image>
+          </Card>
+        </Container>
+
       </>
     )
   }
