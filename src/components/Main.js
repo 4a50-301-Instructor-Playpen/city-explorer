@@ -20,7 +20,6 @@ class Main extends React.Component {
       errMessage: "All Zeros"
     }
   }
-  getWeather
   modalHandler = (e) => {
     if (this.state.modalVis === true) {
       this.setState({ modalVis: false })
