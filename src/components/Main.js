@@ -2,7 +2,7 @@ import React from 'react';
 import Weather from './Weather.js'
 import Form from 'react-bootstrap/Form'
 import ErrorModal from './ErrorModal'
-import { Button, Card, Image, Container } from 'react-bootstrap'
+import { Button, Image, Container, Col, Row } from 'react-bootstrap'
 import Axios from 'axios'
 
 //Use the space between render and return to make quick vars for use in non changing items
@@ -17,7 +17,8 @@ class Main extends React.Component {
       weather: [],
       modalVis: false,
       errStatus: 1,
-      errMessage: "All Zeros"
+      errMessage: "All Zeros",
+      showData: false
     }
   }
   modalHandler = (e) => {
@@ -38,7 +39,7 @@ class Main extends React.Component {
         lon: res.data[0].lon,
         display_name: res.data[0].display_name
       });
-      const weather = await Axios.get(`http://localhost:3001/weather?searchQuery=Paris`);
+      const weather = await Axios.get(`http://localhost:3001/weather?lat=${this.state.lat}&lon=${this.state.lon}`);
       console.log(weather.data, typeof (weather.data))
 
       this.setState({ weather: weather.data });
@@ -69,32 +70,34 @@ class Main extends React.Component {
     return (
       <>
         <ErrorModal modalVis={this.state.modalVis} modalHandler={this.modalHandler} errStatus={this.state.errStatus} errMessage={this.state.errMessage} />
-
-        <h1>City Explorer!</h1>
-        <Container className="mb-3">
-          <Form className="m4" onSubmit={this.handleSubmit}>
-            <Form.Group>
-              <Form.Control onChange={this.cityFormChange} type="text" custom>
-              </Form.Control>
-              <br />
-              <Button onClick={this.handleSubmit}>Explore!</Button>
-            </Form.Group>
-          </Form>
-        </Container>
-        <Container>
-          <Card style={{ width: '30rem' }} className="text-center mb-3 bg-primary">
-            <Card.Title className="p-3 text-white">{this.state.display_name}</Card.Title>
-            <Card.Subtitle className="text-white bg-secondary">
-              Latitiude: {this.state.lat}  Longitude: {this.state.lon}
-            </Card.Subtitle>
-            <Image src={staticImage} alt="image"></Image>
-          </Card>
-        </Container>
-        <Container>
-          <Weather weatherdata={this.state.weather} cityname={this.state.display_name} />
-        </Container>
-
-
+        <Row>
+          <Col>
+            <h1 className="display-1">City Explorer-O-Matic</h1>
+          </Col>
+        </Row>
+        <Row>
+          <Container>
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Group>
+                <Form.Control onChange={this.cityFormChange} type="text" custom>
+                </Form.Control>
+                <Button className="m-3" onClick={this.handleSubmit}>Explore!</Button>
+              </Form.Group>
+            </Form>
+          </Container>
+        </Row>
+        <Row className="bg-primary bg-gradient">
+          <h2 className="bg-primary text-white bg-gradient text-center">{this.state.display_name}</h2>
+          <h3 className="bg-primary text-white-50 bg-gradient text-center">{this.state.lat} {this.state.lon}</h3>
+        </Row>
+        <Row className="m-3">
+          <Col className="p-2">
+            <Image className="img-fluid" src={staticImage} alt="image"></Image>
+          </Col>
+          <Col className="p-2">
+            <Weather weatherdata={this.state.weather} cityname={this.state.display_name} />
+          </Col>
+        </Row>
       </>
     )
   }
