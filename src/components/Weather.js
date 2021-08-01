@@ -1,9 +1,6 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
 class Weather extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     let weatherArr = [];
     if (this.props.weatherdata.length > 4) {
@@ -13,7 +10,7 @@ class Weather extends React.Component {
     }
     else {
       this.props.weatherdata.map((w) => {
-        weatherArr.push(w);
+        return weatherArr.push(w);
       });
     }
     return (
