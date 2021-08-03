@@ -16,7 +16,7 @@ class Weather extends React.Component {
     return (
       <>
         {weatherArr.map((w) => {
-          return <Card className="text-center mb-3 bg-primary">
+          return <Card key={w.date} className="text-center mb-1 bg-secondary">
             <Card.Title>
               <h2 className="fw-bold text-white">Date: {w.date}</h2>
             </Card.Title>
