@@ -1,9 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card'
 class Movies extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+
   render() {
 
     // MOVE ERROR CHECKING TO SERVER!!!!

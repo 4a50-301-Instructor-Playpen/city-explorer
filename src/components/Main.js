@@ -3,7 +3,7 @@ import Weather from './Weather.js'
 import Movies from './Movies.js'
 import Form from 'react-bootstrap/Form'
 import ErrorModal from './ErrorModal'
-import { Button, Image, Container, Col, Row, Card } from 'react-bootstrap'
+import { Button, Image, Container, Col, Row } from 'react-bootstrap'
 import Axios from 'axios'
 
 //Use the space between render and return to make quick vars for use in non changing items
