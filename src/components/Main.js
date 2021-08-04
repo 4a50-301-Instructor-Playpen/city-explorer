@@ -49,7 +49,8 @@ class Main extends React.Component {
     }
     try {
       //get weather from server
-      const weather = await Axios.get(`http://localhost:3001/weather?lat=${this.state.coordinates.lat}&lon=${this.state.coordinates.lon}`);
+
+      const weather = await Axios.get(`${process.env.REACT_APP_DEPLOYED_URL}/weather?lat=${this.state.coordinates.lat}&lon=${this.state.coordinates.lon}`);
       this.setState({ weather: weather.data });
     }
     catch (error) {
@@ -57,7 +58,8 @@ class Main extends React.Component {
     }
     try {
       //get movies from server
-      const movieApi = await Axios.get(`http://localhost:3001/movies?city_name=${this.state.cityInput}`);
+      const movieApi = await Axios.get(`${process.env.REACT_APP_DEPLOYED_URL}/movies?city_name=seattle`);
+      console.log(`movieAPI: ${movieApi.data}`);
       this.setState({ movies: movieApi.data });
     }
     catch (error) {
