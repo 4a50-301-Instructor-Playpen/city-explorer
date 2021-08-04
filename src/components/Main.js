@@ -1,5 +1,6 @@
 import React from 'react';
 import Weather from './Weather.js'
+import Movies from './Movies.js'
 import Form from 'react-bootstrap/Form'
 import ErrorModal from './ErrorModal'
 import { Button, Image, Container, Col, Row } from 'react-bootstrap'
@@ -11,10 +12,12 @@ class Main extends React.Component {
     super(props);
     this.state = {
       cityInput: "",
+      coordinates: { lat: '.705', lon: '.743' },
       lat: "0.750",
       lon: "0.756",
       display_name: "Corneria, Lylat System",
       weather: [],
+      movies: [],
       modalVis: false,
       errStatus: 1,
       errMessage: "All Zeros",
@@ -29,28 +32,36 @@ class Main extends React.Component {
 
     console.log("Close the modal.  Modal State: " + this.state.modalVis);
   }
-  getLocationData = async () => {
+  getLocationInfo = async () => {
     let URL = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_KEY}&q=${this.state.cityInput}&format=json`;
     try {
-
+      //get lat/long city name.  
       const res = await Axios.get(URL);
+      //set it's state
       this.setState({
-        lat: res.data[0].lat,
-        lon: res.data[0].lon,
-        display_name: res.data[0].display_name
+        display_name: res.data[0].display_name,
+        coordinates: { lat: res.data[0].lat, lon: res.data[0].lon },
       });
-      const weather = await Axios.get(`http://localhost:3001/weather?lat=${this.state.lat}&lon=${this.state.lon}`);
-      console.log(weather.data, typeof (weather.data))
-
-      this.setState({ weather: weather.data });
-
+      console.log(`LAT: ${this.state.coordinates.lat} LONG: ${this.state.coordinates.lon}`);
     }
-    catch (e) {
-      console.log(e)
-      // console.log('error!', e.response.status, e.response.data.error);
-      // this.setState({ errStatus: e.response.status, errMessage: e.response.data.error, modalVis: true })
-
-
+    catch (error) {
+      console.log(`Status: ${error.status} Type: Location Message: ${error.message}`)
+    }
+    try {
+      //get weather from server
+      const weather = await Axios.get(`http://localhost:3001/weather?lat=${this.state.coordinates.lat}&lon=${this.state.coordinates.lon}`);
+      this.setState({ weather: weather.data });
+    }
+    catch (error) {
+      console.log(`Status: ${error.status} Type: Weather Message: ${error.message}`)
+    }
+    try {
+      //get movies from server
+      const movieApi = await Axios.get(`http://localhost:3001/movies?city_name=${this.state.cityInput}`);
+      this.setState({ movies: movieApi.data });
+    }
+    catch (error) {
+      console.log(`Status: ${error.status} Type: Movie Message: ${error.message}`)
     }
   }
   cityFormChange = (e) => {
@@ -60,13 +71,13 @@ class Main extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     console.log(`Clicked: ${this.state.cityInput}`);
-    this.getLocationData();
+    this.getLocationInfo();
   }
   //TODO: Simplify the Image Handling.
   render() {
     let staticImage;
-    if (this.state.lat === '0.750') staticImage = 'https://via.placeholder.com/400x400';
-    else { staticImage = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_KEY}&center=${this.state.lat},${this.state.lon}&zoom=15` }
+    if (this.state.coordinates.lat === '0.750') staticImage = 'https://via.placeholder.com/400x400';
+    else { staticImage = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_KEY}&center=${this.state.coordinates.lat},${this.state.coordinates.lon}&zoom=15` }
     return (
       <>
         <ErrorModal modalVis={this.state.modalVis} modalHandler={this.modalHandler} errStatus={this.state.errStatus} errMessage={this.state.errMessage} />
@@ -88,14 +99,32 @@ class Main extends React.Component {
         </Row>
         <Row className="bg-primary bg-gradient">
           <h2 className="bg-primary text-white bg-gradient text-center">{this.state.display_name}</h2>
-          <h3 className="bg-primary text-white-50 bg-gradient text-center">{this.state.lat} {this.state.lon}</h3>
+          <h3 className="bg-primary text-white-50 bg-gradient text-center">{this.state.coordinates.lat} {this.state.coordinates.lon}</h3>
         </Row>
         <Row className="m-3">
           <Col className="p-2">
+            <h2 className="text-center bg-primary text-white">Location Map</h2>
             <Image className="img-fluid" src={staticImage} alt="image"></Image>
           </Col>
           <Col className="p-2">
+            <h2 className="text-center bg-primary text-white">Forecast</h2>
             <Weather weatherdata={this.state.weather} cityname={this.state.display_name} />
+
+          </Col>
+        </Row>
+        <Row className="m-3">
+          <Col>
+            <h2 className="text-center bg-primary text-white">Movies</h2>
+
+            <Container fluid>
+              <Row xs={1} md={2}>
+                {this.state.movies.map(
+                  m => {
+                    return <Movies movie={m} />
+                  })}
+              </Row>
+
+            </Container>
           </Col>
         </Row>
       </>
