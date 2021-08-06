@@ -58,7 +58,7 @@ class Main extends React.Component {
     }
     try {
       //get movies from server
-      const movieApi = await Axios.get(`${process.env.REACT_APP_DEPLOYED_URL}/movies?city_name=seattle`);
+      const movieApi = await Axios.get(`${process.env.REACT_APP_DEPLOYED_URL}/movies?city_name=${this.state.cityInput}`);
       console.log(`movieAPI: ${movieApi.data}`);
       this.setState({ movies: movieApi.data });
     }
