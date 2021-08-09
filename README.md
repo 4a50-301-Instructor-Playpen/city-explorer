@@ -3,7 +3,7 @@
 **Author**: JP Jones
 **Version**: 0.0.0 
 
-[https://4a50-city-explorer.netlify.app/] https://4a50-city-explorer.netlify.app/
+https://4a50-city-explorer.netlify.app/
 ## Overview
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
 
