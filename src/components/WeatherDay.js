@@ -1,11 +1,6 @@
-'use strict'
 import React from 'react'
 import { Card } from 'react-bootstrap'
 class WeatherDay extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     return (
       <Card key={this.props.weather.date} className="text-center mb-1 bg-secondary">

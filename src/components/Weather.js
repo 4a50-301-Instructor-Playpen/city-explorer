@@ -1,10 +1,6 @@
 import React from 'react'
 import WeatherDay from './WeatherDay.js'
-import { Card } from 'react-bootstrap'
 class Weather extends React.Component {
-  constructor(props) {
-    super(props)
-  }
   render() {
     let weatherArr = [];
     if (this.props.weatherdata.length > 4) {
