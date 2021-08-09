@@ -5,7 +5,6 @@ import Form from 'react-bootstrap/Form'
 import ErrorModal from './ErrorModal'
 import { Button, Image, Container, Col, Row } from 'react-bootstrap'
 import Axios from 'axios'
-
 //Use the space between render and return to make quick vars for use in non changing items
 class Main extends React.Component {
   constructor(props) {
@@ -29,7 +28,6 @@ class Main extends React.Component {
       this.setState({ modalVis: false })
     }
     else { this.setState({ modalVis: true }) }
-
     console.log("Close the modal.  Modal State: " + this.state.modalVis);
   }
   getLocationInfo = async () => {
@@ -47,6 +45,20 @@ class Main extends React.Component {
     catch (error) {
       console.log(`Status: ${error.status} Type: Location Message: ${error.message}`)
     }
+    await this.getWeather();
+    await this.getMovies();
+  }
+  async getMovies() {
+    try {
+      //get movies from server
+      const movieApi = await Axios.get(`${process.env.REACT_APP_DEPLOYED_URL}/movies?city_name=${this.state.cityInput}`);
+      this.setState({ movies: movieApi.data });
+    }
+    catch (error) {
+      console.log(`Status: ${error.status} Type: Movie Message: ${error.message}`)
+    }
+  }
+  async getWeather() {
     try {
       //get weather from server
 
@@ -55,15 +67,6 @@ class Main extends React.Component {
     }
     catch (error) {
       console.log(`Status: ${error.status} Type: Weather Message: ${error.message}`)
-    }
-    try {
-      //get movies from server
-      const movieApi = await Axios.get(`${process.env.REACT_APP_DEPLOYED_URL}/movies?city_name=${this.state.cityInput}`);
-      console.log(`movieAPI: ${movieApi.data}`);
-      this.setState({ movies: movieApi.data });
-    }
-    catch (error) {
-      console.log(`Status: ${error.status} Type: Movie Message: ${error.message}`)
     }
   }
   cityFormChange = (e) => {
@@ -118,13 +121,9 @@ class Main extends React.Component {
           <Col>
             <h2 className="text-center bg-primary text-white">Movies</h2>
 
-            <Container fluid>
-              <Row xs={1} md={2}>
-                {this.state.movies.map(
-                  m => {
-                    return <Movies movie={m} />
-                  })}
-              </Row>
+            <Container fluid="true">
+              <Movies movieList={this.state.movies} />
+
 
             </Container>
           </Col>
