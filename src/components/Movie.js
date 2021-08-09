@@ -6,7 +6,7 @@ class Movie extends React.Component {
   render() {
     return (
       <Card key={this.props.movie.title} className="text-center m-1 bg-secondary" style={{ width: '18rem', }}>
-        <Card.Img variant="top" src={this.props.movie.image_url} fluid />
+        <Card.Img variant="top" src={this.props.movie.image_url} fluid="true" />
         <Card.Title>{this.props.movie.title}</Card.Title>
         <Card.Subtitle>{this.props.movie.released_on}</Card.Subtitle>
         <Card.Text>{this.props.movie.image_url}</Card.Text>
