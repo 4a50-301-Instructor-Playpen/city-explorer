@@ -28,7 +28,6 @@ class Main extends React.Component {
       this.setState({ modalVis: false })
     }
     else { this.setState({ modalVis: true }) }
-
     console.log("Close the modal.  Modal State: " + this.state.modalVis);
   }
   getLocationInfo = async () => {
@@ -52,7 +51,7 @@ class Main extends React.Component {
   async getMovies() {
     try {
       //get movies from server
-      const movieApi = await Axios.get(`${process.env.REACT_APP_LOCAL_SERVER}/movies?city_name=${this.state.cityInput}`);
+      const movieApi = await Axios.get(`${process.env.REACT_APP_DEPLOYED_URL}/movies?city_name=${this.state.cityInput}`);
       this.setState({ movies: movieApi.data });
     }
     catch (error) {
@@ -63,7 +62,7 @@ class Main extends React.Component {
     try {
       //get weather from server
 
-      const weather = await Axios.get(`${process.env.REACT_APP_LOCAL_SERVER}/weather?lat=${this.state.coordinates.lat}&lon=${this.state.coordinates.lon}`);
+      const weather = await Axios.get(`${process.env.REACT_APP_DEPLOYED_URL}/weather?lat=${this.state.coordinates.lat}&lon=${this.state.coordinates.lon}`);
       this.setState({ weather: weather.data });
     }
     catch (error) {
