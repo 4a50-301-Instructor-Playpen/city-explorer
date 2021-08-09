@@ -1,6 +1,10 @@
 import React from 'react'
+import WeatherDay from './WeatherDay.js'
 import { Card } from 'react-bootstrap'
 class Weather extends React.Component {
+  constructor(props) {
+    super(props)
+  }
   render() {
     let weatherArr = [];
     if (this.props.weatherdata.length > 4) {
@@ -16,14 +20,7 @@ class Weather extends React.Component {
     return (
       <>
         {weatherArr.map((w) => {
-          return <Card key={w.date} className="text-center mb-1 bg-secondary">
-            <Card.Title>
-              <h2 className="fw-bold text-white">Date: {w.date}</h2>
-            </Card.Title>
-            <Card.Body>
-              <h3 className="text-white">{w.description}</h3>
-            </Card.Body>
-          </Card>
+          return <WeatherDay key={w.date} weather={w} />
         })}
       </>
     )
