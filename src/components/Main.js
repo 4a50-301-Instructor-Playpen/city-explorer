@@ -119,12 +119,8 @@ class Main extends React.Component {
             <h2 className="text-center bg-primary text-white">Movies</h2>
 
             <Container fluid>
-              <Row xs={1} md={2}>
-                {this.state.movies.map(
-                  m => {
-                    return <Movies movie={m} />
-                  })}
-              </Row>
+              <Movies movieList={this.state.movies} />
+
 
             </Container>
           </Col>
