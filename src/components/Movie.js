@@ -9,7 +9,6 @@ class Movie extends React.Component {
         <Card.Img variant="top" src={this.props.movie.image_url} fluid="true" />
         <Card.Title>{this.props.movie.title}</Card.Title>
         <Card.Subtitle>{this.props.movie.released_on}</Card.Subtitle>
-        <Card.Text>{this.props.movie.image_url}</Card.Text>
         <Card.Body>
           <p className="text-white">{this.props.movie.overview}</p>
         </Card.Body>
