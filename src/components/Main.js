@@ -1,6 +1,7 @@
 import React from 'react';
 import Weather from './Weather.js'
 import Movies from './Movies.js'
+import Yelp from './Yelp.js'
 import Form from 'react-bootstrap/Form'
 import ErrorModal from './ErrorModal'
 import { Button, Image, Container, Col, Row } from 'react-bootstrap'
@@ -17,6 +18,7 @@ class Main extends React.Component {
       display_name: "Corneria, Lylat System",
       weather: [],
       movies: [],
+      yelp: [],
       modalVis: false,
       errStatus: 1,
       errMessage: "All Zeros",
@@ -47,6 +49,16 @@ class Main extends React.Component {
     }
     await this.getWeather();
     await this.getMovies();
+    await this.getYelp();
+  }
+  async getYelp() {
+    try {
+      const yelpApi = await Axios.get(`${process.env.REACT_APP_DEPLOYED_URL}/yelp?searchQuery=${this.state.cityInput}`);
+      this.setState({ yelp: yelpApi.data });
+    }
+    catch (err) {
+      console.log('Yelp Error: ' + err);
+    }
   }
   async getMovies() {
     try {
@@ -83,6 +95,7 @@ class Main extends React.Component {
     let staticImage;
     if (this.state.coordinates.lat === '0.750') staticImage = 'https://via.placeholder.com/400x400';
     else { staticImage = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_KEY}&center=${this.state.coordinates.lat},${this.state.coordinates.lon}&zoom=15` }
+    console.log(this.state)
     return (
       <>
         <ErrorModal modalVis={this.state.modalVis} modalHandler={this.modalHandler} errStatus={this.state.errStatus} errMessage={this.state.errMessage} />
@@ -113,17 +126,22 @@ class Main extends React.Component {
           </Col>
           <Col className="p-2">
             <h2 className="text-center bg-primary text-white">Forecast</h2>
-            <Weather weatherdata={this.state.weather} cityname={this.state.display_name} />
-
+            {(this.state.weather.length > 0) ?
+              <Weather weatherData={this.state.weather} /> : <h1>No Weather Data To Display</h1>
+            }
           </Col>
         </Row>
         <Row className="m-3">
           <Col>
             <h2 className="text-center bg-primary text-white">Movies</h2>
-
             <Container fluid="true">
               <Movies movieList={this.state.movies} />
-
+            </Container>
+          </Col>
+          <Col>
+            <h2 className="text-center bg-primary text-white">Local Businesses (Yelp)</h2>
+            <Container fluid="true">
+              {(this.state.yelp.length > 0) ? <Yelp yelpData={this.state.yelp} /> : <h1>No Business Data to Display</h1>}
 
             </Container>
           </Col>

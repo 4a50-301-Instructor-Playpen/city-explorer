@@ -8,7 +8,7 @@ class WeatherDay extends React.Component {
           <h2 className="fw-bold text-white">Date: {this.props.weather.date}</h2>
         </Card.Title>
         <Card.Body>
-          <h3 className="text-white">{this.props.weather.description}</h3>
+          <h3 className="text-white">{this.props.weather.forecast}</h3>
         </Card.Body>
       </Card>
     )
