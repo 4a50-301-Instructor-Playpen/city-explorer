@@ -16,7 +16,7 @@ class Weather extends React.Component {
     return (
       <>
         {weatherArr.map((w) => {
-          return <WeatherDay key={w.date} weather={w} />
+          return <WeatherDay key={w.description} weather={w} />
         })}
       </>
     )
