@@ -126,8 +126,9 @@ class Main extends React.Component {
           </Col>
           <Col className="p-2">
             <h2 className="text-center bg-primary text-white">Forecast</h2>
-            <Weather weatherdata={this.state.weather} cityname={this.state.display_name} />
-
+            {(this.state.weather.length > 0) ?
+              <Weather weatherData={this.state.weather} /> : <h1>No Weather Data To Display</h1>
+            }
           </Col>
         </Row>
         <Row className="m-3">
@@ -138,9 +139,10 @@ class Main extends React.Component {
             </Container>
           </Col>
           <Col>
-            <h2 className="text-center bg-primary text-white">Local Businesses</h2>
+            <h2 className="text-center bg-primary text-white">Local Businesses (Yelp)</h2>
             <Container fluid="true">
-              <Yelp yelpData={this.state.yelp} />
+              {(this.state.yelp.length > 0) ? <Yelp yelpData={this.state.yelp} /> : <h1>No Business Data to Display</h1>}
+
             </Container>
           </Col>
         </Row>
