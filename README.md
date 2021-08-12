@@ -1,7 +1,7 @@
 # Project Name
 
 **Author**: JP Jones
-**Version**: 0.0.0 
+**Version**: 1.0.0 
 
 https://4a50-city-explorer.netlify.app/
 ## Overview
